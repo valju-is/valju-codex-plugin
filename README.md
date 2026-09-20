@@ -10,7 +10,16 @@ It can search active listings and recorded sales, resolve properties, inspect pr
 - A Codex client with plugin and Streamable HTTP MCP support
 - Browser access for OAuth authorization
 
-## Install from a local clone
+## Install
+
+After the public GitHub repository is available, add the Valjú marketplace and install the plugin:
+
+```sh
+codex plugin marketplace add valju-is/valju-codex-plugin --ref main
+codex plugin add valju@valju
+```
+
+## Local development
 
 Clone this repository, register it as a local marketplace, and install the plugin:
 
