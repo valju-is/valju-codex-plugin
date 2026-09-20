@@ -42,18 +42,19 @@ For a broadly distributed connector, Valjú must also complete Microsoft's conne
 
 ## Claude Cowork
 
-Custom remote MCP connectors are available in Cowork through your Claude account.
+The easiest setup is the packaged Valjú Cowork plugin:
 
-For individual plans:
+1. Download [`valju-cowork-plugin.zip`](dist/valju-cowork-plugin.zip).
+2. Open the **Cowork** tab in Claude Desktop.
+3. Open **Customize → Plugins** and choose **Add** or **Upload plugin**.
+4. Select the ZIP file, review it, and approve the installation.
+5. Connect your Valjú account in the browser when prompted.
 
-1. Open **Customize → Connectors**.
-2. Select **+ → Add custom connector**.
-3. Name the connector Valjú and enter `https://api.valju.is/mcp`.
-4. Add and authenticate the connector, then enable it in Cowork.
+The plugin packages the Valjú remote MCP connection and real-estate research instructions. Plugins added directly in Cowork are stored locally on your computer.
 
-For Team and Enterprise organizations, an Owner must first add the custom web connector under **Organization settings → Connectors**. Members can then connect it from **Customize → Connectors**.
+For Team and Enterprise distribution, an Owner can open **Organization settings → Plugins**, select **Add plugins → Upload a file**, and upload the same ZIP to a manual marketplace. Anthropic requires a valid ZIP under 50 MB.
 
-See the [official Claude remote MCP connector guide](https://support.claude.com/en/articles/11175166-get-started-with-custom-connectors-using-remote-mcp).
+See Anthropic's official guides for [using plugins in Claude](https://support.claude.com/en/articles/13837440-use-plugins-in-claude) and [managing organization plugins](https://support.claude.com/en/articles/13837433-manage-plugins-for-your-organization).
 
 ## Data semantics
 

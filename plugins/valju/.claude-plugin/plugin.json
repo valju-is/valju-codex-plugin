@@ -1,0 +1,19 @@
+{
+  "name": "valju",
+  "version": "0.1.0",
+  "description": "Research Icelandic properties and housing markets with authenticated Valjú data.",
+  "author": {
+    "name": "Valjú",
+    "url": "https://valju.is"
+  },
+  "homepage": "https://valju.is/mcp",
+  "repository": "https://github.com/valju-is/valju-plugin",
+  "license": "MIT",
+  "keywords": [
+    "iceland",
+    "real-estate",
+    "property",
+    "housing",
+    "mcp"
+  ]
+}
