@@ -1,48 +1,69 @@
 <p align="center">
-  <img src="plugins/valju/assets/valju-mark.png" alt="Valjú" width="112" />
+  <img src="assets/valju-mark.png" alt="Valjú" width="112" />
 </p>
 
-# Valjú for Codex
+# Valjú plugin
 
-The official Valjú Codex plugin connects Codex to authenticated Icelandic real-estate data through the hosted Valjú MCP service.
+The official public integration package for connecting ChatGPT, GitHub Copilot, and Claude to authenticated Icelandic real-estate data through the hosted Valjú MCP service.
 
-It can search active listings and recorded sales, resolve properties, inspect property history and valuations, find comparable transactions, and calculate housing-market statistics.
+Valjú can search active listings and recorded sales, resolve properties, inspect property history and valuations, find comparable transactions, and calculate housing-market statistics.
 
-## Requirements
+## Connection details
 
-- A Valjú account
-- A Codex client with plugin and Streamable HTTP MCP support
-- Browser access for OAuth authorization
+- MCP transport: Streamable HTTP
+- Endpoint: `https://api.valju.is/mcp`
+- Authentication: OAuth in your browser
+- Public guide: <https://valju.is/mcp>
 
-## Install
+You need a Valjú account and a supported client with remote MCP and OAuth support. You do not need to copy an API key or access token.
 
-After the public GitHub repository is available, add the Valjú marketplace and install the plugin:
+## ChatGPT
 
-```sh
-codex plugin marketplace add valju-is/valju-codex-plugin --ref main
-codex plugin add valju@valju
+1. In ChatGPT, open **Settings → Security and login** and enable **Developer mode**.
+2. Open <https://chatgpt.com/plugins>, select **Create app**, and name it Valjú.
+3. Enter `https://api.valju.is/mcp` as the MCP server URL.
+4. Select Valjú in a new conversation and complete the authorization flow.
+
+See the [official ChatGPT developer-mode guide](https://developers.openai.com/api/docs/guides/developer-mode).
+
+## GitHub Copilot in VS Code
+
+Open the Command Palette and run **MCP: Add Server**. Select **HTTP**, enter the Valjú endpoint, and name the server `valju`.
+
+You can also copy [`examples/vscode/mcp.json`](examples/vscode/mcp.json) into your workspace at `.vscode/mcp.json`:
+
+```json
+{
+  "servers": {
+    "valju": {
+      "type": "http",
+      "url": "https://api.valju.is/mcp"
+    }
+  }
+}
 ```
 
-## Local development
+Trust the server when prompted and complete authentication in your browser. See the [official VS Code MCP guide](https://code.visualstudio.com/docs/agent-customization/mcp-servers).
 
-Clone this repository, register it as a local marketplace, and install the plugin:
+## Claude
+
+In Claude, open **Settings → Connectors**, select **Add custom connector**, name it Valjú, and enter the MCP endpoint.
+
+For Claude Code, run:
 
 ```sh
-codex plugin marketplace add /absolute/path/to/valju-codex-plugin
-codex plugin add valju@valju
+claude mcp add --transport http valju https://api.valju.is/mcp
 ```
 
-Start a new Codex thread after installation so the Valjú skill and MCP tools are loaded. Codex will open Valjú's authorization flow when authentication is required.
+See the official guides for [Claude custom connectors](https://support.claude.com/en/articles/11175166-get-started-with-custom-connectors-using-remote-mcp) and [Claude Code MCP](https://code.claude.com/docs/en/mcp).
 
 ## Data semantics
 
 Valjú distinguishes canonical properties, source advertisements, asking prices, recorded transactions, and estimated valuations. These values are not interchangeable. Listing search responses expose `total`; page length is not the total inventory count.
 
-The public connection guide is available at <https://valju.is/mcp>. The hosted MCP endpoint is `https://api.valju.is/mcp`.
-
 ## Repository boundary
 
-This repository contains only public plugin metadata, user guidance, and MCP connection configuration. The Valjú service implementation, data pipelines, database, and credentials are maintained privately.
+This repository contains only public connection examples and user guidance. The Valjú service implementation, data pipelines, database, and credentials are maintained privately.
 
 ## Security
 

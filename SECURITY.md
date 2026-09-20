@@ -8,4 +8,4 @@ Report security issues privately through the security contact published at <http
 
 ## Scope
 
-This repository contains the public Codex plugin package. Vulnerabilities involving authentication, authorization, the hosted MCP endpoint, or Valjú account data should also be reported privately rather than demonstrated against production accounts.
+This repository contains the public Valjú MCP integration guides and connection examples. Vulnerabilities involving authentication, authorization, the hosted MCP endpoint, or Valjú account data should also be reported privately rather than demonstrated against production accounts.

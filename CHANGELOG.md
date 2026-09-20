@@ -1,12 +1,10 @@
 # Changelog
 
-All notable changes to the Valjú Codex plugin will be documented here.
+All notable changes to the public Valjú integrations will be documented here.
 
-The project follows semantic versioning.
+## Unreleased
 
-## 0.1.0 - Unreleased
-
-- Add the initial Valjú plugin manifest and marketplace entry.
-- Connect to the hosted Valjú Streamable HTTP MCP service.
-- Add guidance for Icelandic property research and market-data semantics.
-- Add the Valjú brand mark for plugin and composer surfaces.
+- Rename the repository to `valju-plugin`.
+- Document ChatGPT, GitHub Copilot, and Claude setup flows.
+- Add a reusable VS Code MCP configuration example.
+- Remove the former client-specific package and marketplace metadata.
