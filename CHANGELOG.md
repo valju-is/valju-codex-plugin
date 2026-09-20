@@ -4,6 +4,7 @@ All notable changes to the public Valjú integrations will be documented here.
 
 ## Unreleased
 
+- Rename the Cowork skill from `valju-real-estate` to `valju` and publish plugin version 0.1.2.
 - Fix Cowork connector discovery by using the wrapped `mcpServers` configuration, declaring the connector in the manifest, and documenting OAuth PKCE authentication.
 - Add a downloadable Claude Cowork plugin ZIP with the Valjú MCP connection and real-estate skill.
 - Rename the repository to `valju-plugin`.

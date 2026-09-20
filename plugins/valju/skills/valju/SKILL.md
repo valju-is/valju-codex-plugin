@@ -1,5 +1,5 @@
 ---
-name: valju-real-estate
+name: valju
 description: Research Icelandic real estate with Valjú. Use when the user asks about Icelandic properties, listings, recorded sales, valuations, comparable transactions, listing inventory, or housing-market statistics.
 ---
 
