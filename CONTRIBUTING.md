@@ -7,6 +7,5 @@ Do not submit private backend code, credentials, access tokens, customer informa
 Before submitting a change:
 
 1. Keep the MCP server identifier `valju` and endpoint stable.
-2. Validate all JSON examples.
-3. Test the affected setup flow in ChatGPT, GitHub Copilot, or Claude.
-4. Keep client-specific instructions linked to the client's official documentation.
+2. Test the affected setup flow in ChatGPT, Microsoft 365 Copilot, or Claude Cowork.
+3. Keep client-specific instructions linked to the client's official documentation.

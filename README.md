@@ -4,7 +4,7 @@
 
 # Valjú plugin
 
-The official public integration package for connecting ChatGPT, GitHub Copilot, and Claude to authenticated Icelandic real-estate data through the hosted Valjú MCP service.
+The official public integration package for connecting ChatGPT, Microsoft 365 Copilot, and Claude Cowork to authenticated Icelandic real-estate data through the hosted Valjú MCP service.
 
 Valjú can search active listings and recorded sales, resolve properties, inspect property history and valuations, find comparable transactions, and calculate housing-market statistics.
 
@@ -26,36 +26,34 @@ You need a Valjú account and a supported client with remote MCP and OAuth suppo
 
 See the [official ChatGPT developer-mode guide](https://developers.openai.com/api/docs/guides/developer-mode).
 
-## GitHub Copilot in VS Code
+## Microsoft 365 Copilot
 
-Open the Command Palette and run **MCP: Add Server**. Select **HTTP**, enter the Valjú endpoint, and name the server `valju`.
+Microsoft 365 Copilot uses a custom federated connector. Setup requires a Microsoft 365 Global Administrator or AI Administrator and an OAuth registration created through the Teams Developer Portal.
 
-You can also copy [`examples/vscode/mcp.json`](examples/vscode/mcp.json) into your workspace at `.vscode/mcp.json`:
+1. Open the Microsoft 365 admin center and select **Copilot → Connectors**.
+2. Open **Gallery**, find **Create a new connector**, and select **Add**.
+3. Under **Connect to MCP server**, select **Add**.
+4. Set the display name to Valjú and the base URL to `https://api.valju.is/mcp`.
+5. Enter the OAuth registration ID prepared for Valjú, then save the connector.
 
-```json
-{
-  "servers": {
-    "valju": {
-      "type": "http",
-      "url": "https://api.valju.is/mcp"
-    }
-  }
-}
-```
+See the [official Microsoft 365 custom federated connector guide](https://learn.microsoft.com/en-us/microsoft-365/copilot/connectors/set-up-custom-federated-connectors).
 
-Trust the server when prompted and complete authentication in your browser. See the [official VS Code MCP guide](https://code.visualstudio.com/docs/agent-customization/mcp-servers).
+For a broadly distributed connector, Valjú must also complete Microsoft's connector certification process.
 
-## Claude
+## Claude Cowork
 
-In Claude, open **Settings → Connectors**, select **Add custom connector**, name it Valjú, and enter the MCP endpoint.
+Custom remote MCP connectors are available in Cowork through your Claude account.
 
-For Claude Code, run:
+For individual plans:
 
-```sh
-claude mcp add --transport http valju https://api.valju.is/mcp
-```
+1. Open **Customize → Connectors**.
+2. Select **+ → Add custom connector**.
+3. Name the connector Valjú and enter `https://api.valju.is/mcp`.
+4. Add and authenticate the connector, then enable it in Cowork.
 
-See the official guides for [Claude custom connectors](https://support.claude.com/en/articles/11175166-get-started-with-custom-connectors-using-remote-mcp) and [Claude Code MCP](https://code.claude.com/docs/en/mcp).
+For Team and Enterprise organizations, an Owner must first add the custom web connector under **Organization settings → Connectors**. Members can then connect it from **Customize → Connectors**.
+
+See the [official Claude remote MCP connector guide](https://support.claude.com/en/articles/11175166-get-started-with-custom-connectors-using-remote-mcp).
 
 ## Data semantics
 
