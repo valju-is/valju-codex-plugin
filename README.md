@@ -48,9 +48,10 @@ The easiest setup is the packaged Valjú Cowork plugin:
 2. Open the **Cowork** tab in Claude Desktop.
 3. Open **Customize → Plugins** and choose **Add** or **Upload plugin**.
 4. Select the ZIP file, review it, and approve the installation.
-5. Connect your Valjú account in the browser when prompted.
+5. Open the installed Valjú plugin, find **Connectors**, and select **Connect** next to Valjú.
+6. Complete the Valjú OAuth authorization in the browser. No API key or client secret is required.
 
-The plugin packages the Valjú remote MCP connection and real-estate research instructions. Plugins added directly in Cowork are stored locally on your computer.
+The plugin packages the Valjú remote MCP connection, OAuth discovery configuration, and real-estate research instructions. Plugins added directly in Cowork are stored locally on your computer.
 
 For Team and Enterprise distribution, an Owner can open **Organization settings → Plugins**, select **Add plugins → Upload a file**, and upload the same ZIP to a manual marketplace. Anthropic requires a valid ZIP under 50 MB.
 
