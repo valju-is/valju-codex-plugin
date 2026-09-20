@@ -1,0 +1,39 @@
+{
+  "name": "valju",
+  "version": "0.1.0",
+  "description": "Official Valjú real-estate data plugin for Icelandic property research.",
+  "author": {
+    "name": "Valjú",
+    "url": "https://valju.is"
+  },
+  "homepage": "https://valju.is/mcp",
+  "repository": "https://github.com/valju-is/valju-codex-plugin",
+  "license": "MIT",
+  "keywords": [
+    "iceland",
+    "real-estate",
+    "property",
+    "housing",
+    "mcp"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Valjú",
+    "shortDescription": "Research Icelandic properties and housing markets.",
+    "longDescription": "Search Icelandic property listings and recorded sales, inspect property history and valuations, find comparable transactions, and analyze market segments using Valjú's authenticated data service.",
+    "developerName": "Valjú",
+    "category": "Data & Analytics",
+    "capabilities": [
+      "Interactive",
+      "Read"
+    ],
+    "websiteURL": "https://valju.is/mcp",
+    "defaultPrompt": [
+      "Find homes currently listed in Reykjavík.",
+      "Summarize recent sales near this property.",
+      "Compare listing inventory across municipalities."
+    ],
+    "brandColor": "#111827"
+  },
+  "mcpServers": "./.mcp.json"
+}

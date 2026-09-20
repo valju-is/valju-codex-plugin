@@ -1,0 +1,20 @@
+{
+  "name": "valju",
+  "interface": {
+    "displayName": "Valjú Official"
+  },
+  "plugins": [
+    {
+      "name": "valju",
+      "source": {
+        "source": "local",
+        "path": "./plugins/valju"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Data & Analytics"
+    }
+  ]
+}

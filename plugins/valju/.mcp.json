@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "valju": {
+      "type": "http",
+      "url": "https://api.valju.is/mcp"
+    }
+  }
+}
