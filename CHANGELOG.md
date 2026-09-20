@@ -9,3 +9,4 @@ The project follows semantic versioning.
 - Add the initial Valjú plugin manifest and marketplace entry.
 - Connect to the hosted Valjú Streamable HTTP MCP service.
 - Add guidance for Icelandic property research and market-data semantics.
+- Add the Valjú brand mark for plugin and composer surfaces.

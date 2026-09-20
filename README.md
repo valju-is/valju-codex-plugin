@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="plugins/valju/assets/valju-mark.png" alt="Valjú" width="112" />
+</p>
+
 # Valjú for Codex
 
 The official Valjú Codex plugin connects Codex to authenticated Icelandic real-estate data through the hosted Valjú MCP service.

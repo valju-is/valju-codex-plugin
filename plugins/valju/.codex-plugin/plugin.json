@@ -1,6 +1,6 @@
 {
   "name": "valju",
-  "version": "0.1.0",
+  "version": "0.1.0+codex.20260920092047",
   "description": "Official Valjú real-estate data plugin for Icelandic property research.",
   "author": {
     "name": "Valjú",
@@ -33,7 +33,9 @@
       "Summarize recent sales near this property.",
       "Compare listing inventory across municipalities."
     ],
-    "brandColor": "#111827"
+    "brandColor": "#111827",
+    "composerIcon": "./assets/valju-mark.png",
+    "logo": "./assets/valju-mark.png"
   },
   "mcpServers": "./.mcp.json"
 }
