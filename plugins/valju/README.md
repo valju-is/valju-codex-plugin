@@ -4,7 +4,7 @@ This plugin connects Claude Cowork to Valjú's authenticated Icelandic real-esta
 
 ## Install
 
-1. Download `valju-cowork-plugin.zip` from the repository's `dist` directory.
+1. Download the current versioned Cowork plugin ZIP linked from the repository README.
 2. Open the Cowork tab in Claude Desktop.
 3. Open **Customize → Plugins** and choose **Add** or **Upload plugin**.
 4. Select the downloaded ZIP file and approve the installation.

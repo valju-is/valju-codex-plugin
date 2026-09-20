@@ -44,7 +44,7 @@ For a broadly distributed connector, Valjú must also complete Microsoft's conne
 
 The easiest setup is the packaged Valjú Cowork plugin:
 
-1. Download [`valju-cowork-plugin.zip`](dist/valju-cowork-plugin.zip).
+1. Download [`valju-cowork-plugin-0.1.1.zip`](dist/valju-cowork-plugin-0.1.1.zip).
 2. Open the **Cowork** tab in Claude Desktop.
 3. Open **Customize → Plugins** and choose **Add** or **Upload plugin**.
 4. Select the ZIP file, review it, and approve the installation.
