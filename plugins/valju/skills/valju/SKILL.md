@@ -7,6 +7,20 @@ description: Research Icelandic real estate with Valjú. Use when the user asks 
 
 Use the Valjú MCP tools for Icelandic property and housing-market questions.
 
+## Connection requirement in Cowork
+
+This skill requires the Valjú custom connector to be enabled in the current Cowork session. The connector is configured at the Claude account or organization level with this remote MCP URL:
+
+`https://api.valju.is/mcp`
+
+If no Valjú MCP tools are available, do not claim that the package lacks a connector definition. Explain that Cowork did not attach the remote connector to this cloud session and ask the user to:
+
+1. Open **Customize → Connectors**.
+2. Select **+ → Add custom connector**.
+3. Name it Valjú and enter `https://api.valju.is/mcp`.
+4. Select **Connect** and complete Valjú OAuth authorization.
+5. Enable Valjú under **+ → Connectors** in the Cowork task, then start a fresh task if needed.
+
 ## Workflow
 
 1. Resolve an address before calling property-specific tools when no stable property ID is available.

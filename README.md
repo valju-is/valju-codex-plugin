@@ -44,18 +44,20 @@ For a broadly distributed connector, Valjú must also complete Microsoft's conne
 
 The easiest setup is the packaged Valjú Cowork plugin:
 
-1. Download [`valju-cowork-plugin-0.1.2.zip`](dist/valju-cowork-plugin-0.1.2.zip).
+1. Download [`valju-cowork-plugin-0.1.3.zip`](dist/valju-cowork-plugin-0.1.3.zip).
 2. Open the **Cowork** tab in Claude Desktop.
 3. Open **Customize → Plugins** and choose **Add** or **Upload plugin**.
 4. Select the ZIP file, review it, and approve the installation.
-5. Open the installed Valjú plugin, find **Connectors**, and select **Connect** next to Valjú.
-6. Complete the Valjú OAuth authorization in the browser. No API key or client secret is required.
+5. Open **Customize → Connectors** and select **+ → Add custom connector**.
+6. Name it Valjú and enter `https://api.valju.is/mcp`.
+7. Add and connect it, then complete Valjú OAuth authorization in the browser. No API key or client secret is required.
+8. Enable Valjú under **+ → Connectors** in the Cowork task.
 
-The plugin packages the Valjú remote MCP connection, OAuth discovery configuration, and real-estate research instructions. Plugins added directly in Cowork are stored locally on your computer.
+The plugin packages the Valjú MCP definition, OAuth discovery details, and real-estate research instructions. Cowork currently may install the skill without attaching a plugin-bundled remote HTTP server to its cloud session, so the account-level custom connector is required for reliable access.
 
-For Team and Enterprise distribution, an Owner can open **Organization settings → Plugins**, select **Add plugins → Upload a file**, and upload the same ZIP to a manual marketplace. Anthropic requires a valid ZIP under 50 MB.
+For Team and Enterprise distribution, an Owner can open **Organization settings → Plugins**, select **Add plugins → Upload a file**, and upload the same ZIP to a manual marketplace. The Owner must also add Valjú under **Organization settings → Connectors** as a custom web connector using the same MCP URL. Anthropic requires a valid ZIP under 50 MB.
 
-See Anthropic's official guides for [using plugins in Claude](https://support.claude.com/en/articles/13837440-use-plugins-in-claude) and [managing organization plugins](https://support.claude.com/en/articles/13837433-manage-plugins-for-your-organization).
+See Anthropic's official guides for [using plugins in Claude](https://support.claude.com/en/articles/13837440-use-plugins-in-claude), [adding remote MCP connectors](https://support.claude.com/en/articles/11175166-get-started-with-custom-connectors-using-remote-mcp), and [managing organization plugins](https://support.claude.com/en/articles/13837433-manage-plugins-for-your-organization).
 
 ## Data semantics
 
