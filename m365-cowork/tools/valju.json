@@ -1,0 +1,2035 @@
+{
+  "tools": [
+    {
+      "_meta": {
+        "securitySchemes": [
+          {
+            "scopes": [
+              "mcp:tools"
+            ],
+            "type": "oauth2"
+          }
+        ]
+      },
+      "annotations": {
+        "destructiveHint": false,
+        "openWorldHint": false,
+        "readOnlyHint": true
+      },
+      "description": "Resolve an address, Valjú UUID/reference or source:listing_id. Ask the user to choose when ambiguous.",
+      "inputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "additionalProperties": false,
+        "properties": {
+          "query": {
+            "maxLength": 240,
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": [
+          "query"
+        ],
+        "title": "ResolveInput",
+        "type": "object"
+      },
+      "name": "resolve_property",
+      "outputSchema": {
+        "$defs": {
+          "Candidate": {
+            "properties": {
+              "match_confidence": {
+                "format": "double",
+                "type": "number"
+              },
+              "property": {
+                "$ref": "#/$defs/Property"
+              }
+            },
+            "required": [
+              "property",
+              "match_confidence"
+            ],
+            "type": "object"
+          },
+          "Listing": {
+            "properties": {
+              "asking_price": {
+                "format": "double",
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "days_on_market": {
+                "format": "int32",
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "listing_date": {
+                "format": "date",
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "listing_id": {
+                "format": "uuid",
+                "type": "string"
+              },
+              "property_id": {
+                "format": "uuid",
+                "type": "string"
+              }
+            },
+            "required": [
+              "listing_id",
+              "property_id"
+            ],
+            "type": "object"
+          },
+          "Property": {
+            "properties": {
+              "address": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "canonical_url": {
+                "type": "string"
+              },
+              "current_listing": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/Listing"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "lat": {
+                "format": "double",
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "lon": {
+                "format": "double",
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "lot_size_m2": {
+                "format": "double",
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "municipality": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "postal_code": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "property_id": {
+                "format": "uuid",
+                "type": "string"
+              },
+              "property_reference": {
+                "type": "string"
+              },
+              "property_type": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "rooms": {
+                "format": "int32",
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "size_m2": {
+                "format": "double",
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "unit_code": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "year_built": {
+                "format": "int32",
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              }
+            },
+            "required": [
+              "property_id",
+              "property_reference",
+              "canonical_url"
+            ],
+            "type": "object"
+          }
+        },
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "oneOf": [
+          {
+            "properties": {
+              "match_confidence": {
+                "format": "double",
+                "type": "number"
+              },
+              "property": {
+                "$ref": "#/$defs/Property"
+              },
+              "status": {
+                "const": "resolved",
+                "type": "string"
+              }
+            },
+            "required": [
+              "status",
+              "property",
+              "match_confidence"
+            ],
+            "type": "object"
+          },
+          {
+            "properties": {
+              "candidates": {
+                "items": {
+                  "$ref": "#/$defs/Candidate"
+                },
+                "type": "array"
+              },
+              "has_more": {
+                "type": "boolean"
+              },
+              "reason": {
+                "type": "string"
+              },
+              "status": {
+                "const": "ambiguous",
+                "type": "string"
+              }
+            },
+            "required": [
+              "status",
+              "candidates",
+              "has_more",
+              "reason"
+            ],
+            "type": "object"
+          },
+          {
+            "properties": {
+              "status": {
+                "const": "not_found",
+                "type": "string"
+              }
+            },
+            "required": [
+              "status"
+            ],
+            "type": "object"
+          }
+        ],
+        "title": "Resolution",
+        "type": "object"
+      }
+    },
+    {
+      "_meta": {
+        "securitySchemes": [
+          {
+            "scopes": [
+              "mcp:tools"
+            ],
+            "type": "oauth2"
+          }
+        ]
+      },
+      "annotations": {
+        "destructiveHint": false,
+        "openWorldHint": false,
+        "readOnlyHint": true
+      },
+      "description": "Return factual property details and current asking price for a canonical Valjú UUID.",
+      "inputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "additionalProperties": false,
+        "properties": {
+          "property_id": {
+            "format": "uuid",
+            "type": "string"
+          }
+        },
+        "required": [
+          "property_id"
+        ],
+        "title": "PropertyInput",
+        "type": "object"
+      },
+      "name": "get_property",
+      "outputSchema": {
+        "$defs": {
+          "Listing": {
+            "properties": {
+              "asking_price": {
+                "format": "double",
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "days_on_market": {
+                "format": "int32",
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "listing_date": {
+                "format": "date",
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "listing_id": {
+                "format": "uuid",
+                "type": "string"
+              },
+              "property_id": {
+                "format": "uuid",
+                "type": "string"
+              }
+            },
+            "required": [
+              "listing_id",
+              "property_id"
+            ],
+            "type": "object"
+          }
+        },
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "address": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "canonical_url": {
+            "type": "string"
+          },
+          "current_listing": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/Listing"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "lat": {
+            "format": "double",
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "lon": {
+            "format": "double",
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "lot_size_m2": {
+            "format": "double",
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "municipality": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "postal_code": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "property_id": {
+            "format": "uuid",
+            "type": "string"
+          },
+          "property_reference": {
+            "type": "string"
+          },
+          "property_type": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "rooms": {
+            "format": "int32",
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "size_m2": {
+            "format": "double",
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "unit_code": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "year_built": {
+            "format": "int32",
+            "type": [
+              "integer",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "property_id",
+          "property_reference",
+          "canonical_url"
+        ],
+        "title": "Property",
+        "type": "object"
+      }
+    },
+    {
+      "_meta": {
+        "securitySchemes": [
+          {
+            "scopes": [
+              "mcp:tools"
+            ],
+            "type": "oauth2"
+          }
+        ]
+      },
+      "annotations": {
+        "destructiveHint": false,
+        "openWorldHint": false,
+        "readOnlyHint": true
+      },
+      "description": "Search current listings with structured filters. Results are paginated; total is the full number of matches, while items contains only the requested page. Common Icelandic municipality names are normalized to official names. Prices are asking prices in ISK.",
+      "inputSchema": {
+        "$defs": {
+          "ListingSort": {
+            "enum": [
+              "relevance",
+              "price_asc",
+              "price_desc",
+              "newest",
+              "days_on_market_desc"
+            ],
+            "type": "string"
+          },
+          "PropertyType": {
+            "enum": [
+              "apartment",
+              "detached_house",
+              "terraced_house",
+              "floor",
+              "other"
+            ],
+            "type": "string"
+          }
+        },
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "additionalProperties": false,
+        "properties": {
+          "limit": {
+            "default": 20,
+            "format": "int64",
+            "maximum": 100,
+            "minimum": 1,
+            "type": "integer"
+          },
+          "max_days_on_market": {
+            "format": "int32",
+            "maximum": 36500,
+            "minimum": 0,
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "max_price": {
+            "format": "double",
+            "minimum": 0,
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "max_size_m2": {
+            "format": "double",
+            "maximum": 100000,
+            "minimum": 0,
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "max_year_built": {
+            "format": "int32",
+            "maximum": 2200,
+            "minimum": 1000,
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "min_days_on_market": {
+            "format": "int32",
+            "maximum": 36500,
+            "minimum": 0,
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "min_price": {
+            "format": "double",
+            "minimum": 0,
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "min_rooms": {
+            "format": "int32",
+            "maximum": 100,
+            "minimum": 0,
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "min_size_m2": {
+            "format": "double",
+            "maximum": 100000,
+            "minimum": 0,
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "min_year_built": {
+            "format": "int32",
+            "maximum": 2200,
+            "minimum": 1000,
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "municipalities": {
+            "default": [],
+            "items": {
+              "type": "string"
+            },
+            "maxItems": 30,
+            "type": "array"
+          },
+          "offset": {
+            "default": 0,
+            "format": "int64",
+            "maximum": 10000,
+            "minimum": 0,
+            "type": "integer"
+          },
+          "postal_codes": {
+            "default": [],
+            "items": {
+              "type": "string"
+            },
+            "maxItems": 30,
+            "type": "array"
+          },
+          "property_types": {
+            "default": [],
+            "items": {
+              "$ref": "#/$defs/PropertyType"
+            },
+            "maxItems": 5,
+            "type": "array"
+          },
+          "sort": {
+            "$ref": "#/$defs/ListingSort",
+            "default": "relevance"
+          }
+        },
+        "title": "ListingSearch",
+        "type": "object"
+      },
+      "name": "search_listings",
+      "outputSchema": {
+        "$defs": {
+          "Listing": {
+            "properties": {
+              "asking_price": {
+                "format": "double",
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "days_on_market": {
+                "format": "int32",
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "listing_date": {
+                "format": "date",
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "listing_id": {
+                "format": "uuid",
+                "type": "string"
+              },
+              "property_id": {
+                "format": "uuid",
+                "type": "string"
+              }
+            },
+            "required": [
+              "listing_id",
+              "property_id"
+            ],
+            "type": "object"
+          },
+          "ListingSearch": {
+            "additionalProperties": false,
+            "properties": {
+              "limit": {
+                "default": 20,
+                "format": "int64",
+                "maximum": 100,
+                "minimum": 1,
+                "type": "integer"
+              },
+              "max_days_on_market": {
+                "format": "int32",
+                "maximum": 36500,
+                "minimum": 0,
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "max_price": {
+                "format": "double",
+                "minimum": 0,
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "max_size_m2": {
+                "format": "double",
+                "maximum": 100000,
+                "minimum": 0,
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "max_year_built": {
+                "format": "int32",
+                "maximum": 2200,
+                "minimum": 1000,
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "min_days_on_market": {
+                "format": "int32",
+                "maximum": 36500,
+                "minimum": 0,
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "min_price": {
+                "format": "double",
+                "minimum": 0,
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "min_rooms": {
+                "format": "int32",
+                "maximum": 100,
+                "minimum": 0,
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "min_size_m2": {
+                "format": "double",
+                "maximum": 100000,
+                "minimum": 0,
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "min_year_built": {
+                "format": "int32",
+                "maximum": 2200,
+                "minimum": 1000,
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "municipalities": {
+                "default": [],
+                "items": {
+                  "type": "string"
+                },
+                "maxItems": 30,
+                "type": "array"
+              },
+              "offset": {
+                "default": 0,
+                "format": "int64",
+                "maximum": 10000,
+                "minimum": 0,
+                "type": "integer"
+              },
+              "postal_codes": {
+                "default": [],
+                "items": {
+                  "type": "string"
+                },
+                "maxItems": 30,
+                "type": "array"
+              },
+              "property_types": {
+                "default": [],
+                "items": {
+                  "$ref": "#/$defs/PropertyType"
+                },
+                "maxItems": 5,
+                "type": "array"
+              },
+              "sort": {
+                "$ref": "#/$defs/ListingSort",
+                "default": "relevance"
+              }
+            },
+            "type": "object"
+          },
+          "ListingSort": {
+            "enum": [
+              "relevance",
+              "price_asc",
+              "price_desc",
+              "newest",
+              "days_on_market_desc"
+            ],
+            "type": "string"
+          },
+          "Property": {
+            "properties": {
+              "address": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "canonical_url": {
+                "type": "string"
+              },
+              "current_listing": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/Listing"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "lat": {
+                "format": "double",
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "lon": {
+                "format": "double",
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "lot_size_m2": {
+                "format": "double",
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "municipality": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "postal_code": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "property_id": {
+                "format": "uuid",
+                "type": "string"
+              },
+              "property_reference": {
+                "type": "string"
+              },
+              "property_type": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "rooms": {
+                "format": "int32",
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "size_m2": {
+                "format": "double",
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "unit_code": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "year_built": {
+                "format": "int32",
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              }
+            },
+            "required": [
+              "property_id",
+              "property_reference",
+              "canonical_url"
+            ],
+            "type": "object"
+          },
+          "PropertyType": {
+            "enum": [
+              "apartment",
+              "detached_house",
+              "terraced_house",
+              "floor",
+              "other"
+            ],
+            "type": "string"
+          }
+        },
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "applied_filters": {
+            "$ref": "#/$defs/ListingSearch"
+          },
+          "calculated_at": {
+            "format": "date",
+            "type": "string"
+          },
+          "has_more": {
+            "type": "boolean"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/$defs/Property"
+            },
+            "type": "array"
+          },
+          "limit": {
+            "format": "int64",
+            "type": "integer"
+          },
+          "offset": {
+            "format": "int64",
+            "type": "integer"
+          },
+          "total": {
+            "description": "Total number of current listings matching the filters, not just this page.",
+            "format": "int64",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "items",
+          "limit",
+          "offset",
+          "has_more",
+          "total",
+          "calculated_at",
+          "applied_filters"
+        ],
+        "title": "ListingPage",
+        "type": "object"
+      }
+    },
+    {
+      "_meta": {
+        "securitySchemes": [
+          {
+            "scopes": [
+              "mcp:tools"
+            ],
+            "type": "oauth2"
+          }
+        ]
+      },
+      "annotations": {
+        "destructiveHint": false,
+        "openWorldHint": false,
+        "readOnlyHint": true
+      },
+      "description": "Return chronological listing, asking-price and recorded transaction events; removal does not prove a sale.",
+      "inputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "additionalProperties": false,
+        "properties": {
+          "property_id": {
+            "format": "uuid",
+            "type": "string"
+          }
+        },
+        "required": [
+          "property_id"
+        ],
+        "title": "PropertyInput",
+        "type": "object"
+      },
+      "name": "get_property_history",
+      "outputSchema": {
+        "$defs": {
+          "HistoryEvent": {
+            "properties": {
+              "agreement_id": {
+                "format": "int64",
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "date": {
+                "format": "date",
+                "type": "string"
+              },
+              "is_invalid_agreement": {
+                "type": [
+                  "boolean",
+                  "null"
+                ]
+              },
+              "is_multi_property_agreement": {
+                "type": [
+                  "boolean",
+                  "null"
+                ]
+              },
+              "listing_id": {
+                "format": "uuid",
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "price": {
+                "format": "double",
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "type": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "type",
+              "date"
+            ],
+            "type": "object"
+          }
+        },
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "events": {
+            "items": {
+              "$ref": "#/$defs/HistoryEvent"
+            },
+            "type": "array"
+          },
+          "property_id": {
+            "format": "uuid",
+            "type": "string"
+          },
+          "truncated": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "property_id",
+          "events",
+          "truncated"
+        ],
+        "title": "History",
+        "type": "object"
+      }
+    },
+    {
+      "_meta": {
+        "securitySchemes": [
+          {
+            "scopes": [
+              "mcp:tools"
+            ],
+            "type": "oauth2"
+          }
+        ]
+      },
+      "annotations": {
+        "destructiveHint": false,
+        "openWorldHint": false,
+        "readOnlyHint": true
+      },
+      "description": "Return ordered image metadata and public image URLs for a Valjú listing ID. An empty images array means no images are available for that listing.",
+      "inputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "additionalProperties": false,
+        "properties": {
+          "listing_id": {
+            "format": "uuid",
+            "type": "string"
+          }
+        },
+        "required": [
+          "listing_id"
+        ],
+        "title": "ListingImagesInput",
+        "type": "object"
+      },
+      "name": "get_listing_images",
+      "outputSchema": {
+        "$defs": {
+          "ListingImage": {
+            "properties": {
+              "byte_size": {
+                "format": "int64",
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "height": {
+                "format": "int32",
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "image_hash": {
+                "type": "string"
+              },
+              "mime_type": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "url": {
+                "type": "string"
+              },
+              "width": {
+                "format": "int32",
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              }
+            },
+            "required": [
+              "image_hash",
+              "url"
+            ],
+            "type": "object"
+          }
+        },
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "images": {
+            "items": {
+              "$ref": "#/$defs/ListingImage"
+            },
+            "type": "array"
+          },
+          "listing_id": {
+            "format": "uuid",
+            "type": "string"
+          },
+          "total": {
+            "format": "uint",
+            "minimum": 0,
+            "type": "integer"
+          }
+        },
+        "required": [
+          "listing_id",
+          "images",
+          "total"
+        ],
+        "title": "ListingImages",
+        "type": "object"
+      }
+    },
+    {
+      "_meta": {
+        "securitySchemes": [
+          {
+            "scopes": [
+              "mcp:tools"
+            ],
+            "type": "oauth2"
+          }
+        ]
+      },
+      "annotations": {
+        "destructiveHint": false,
+        "openWorldHint": false,
+        "readOnlyHint": true
+      },
+      "description": "Search valid single-property recorded transactions. Prices are recorded sale prices in ISK.",
+      "inputSchema": {
+        "$defs": {
+          "PropertyType": {
+            "enum": [
+              "apartment",
+              "detached_house",
+              "terraced_house",
+              "floor",
+              "other"
+            ],
+            "type": "string"
+          }
+        },
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "additionalProperties": false,
+        "properties": {
+          "lat": {
+            "format": "double",
+            "maximum": 90,
+            "minimum": -90,
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "limit": {
+            "default": 20,
+            "format": "int64",
+            "maximum": 100,
+            "minimum": 1,
+            "type": "integer"
+          },
+          "lon": {
+            "format": "double",
+            "maximum": 180,
+            "minimum": -180,
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "max_price": {
+            "format": "double",
+            "minimum": 0,
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "max_size_m2": {
+            "format": "double",
+            "maximum": 100000,
+            "minimum": 0,
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "max_year_built": {
+            "format": "int32",
+            "maximum": 2200,
+            "minimum": 1000,
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "min_price": {
+            "format": "double",
+            "minimum": 0,
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "min_size_m2": {
+            "format": "double",
+            "maximum": 100000,
+            "minimum": 0,
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "min_year_built": {
+            "format": "int32",
+            "maximum": 2200,
+            "minimum": 1000,
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "municipalities": {
+            "default": [],
+            "items": {
+              "type": "string"
+            },
+            "maxItems": 30,
+            "type": "array"
+          },
+          "offset": {
+            "default": 0,
+            "format": "int64",
+            "maximum": 10000,
+            "minimum": 0,
+            "type": "integer"
+          },
+          "postal_codes": {
+            "default": [],
+            "items": {
+              "type": "string"
+            },
+            "maxItems": 30,
+            "type": "array"
+          },
+          "property_types": {
+            "default": [],
+            "items": {
+              "$ref": "#/$defs/PropertyType"
+            },
+            "maxItems": 5,
+            "type": "array"
+          },
+          "radius_m": {
+            "format": "double",
+            "maximum": 50000,
+            "minimum": 1,
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "sale_date_from": {
+            "format": "date",
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "sale_date_to": {
+            "format": "date",
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "title": "SalesSearch",
+        "type": "object"
+      },
+      "name": "search_sales",
+      "outputSchema": {
+        "$defs": {
+          "Sale": {
+            "properties": {
+              "address": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "agreement_id": {
+                "format": "int64",
+                "type": "integer"
+              },
+              "distance_m": {
+                "format": "double",
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "price_per_m2": {
+                "format": "double",
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "property_id": {
+                "format": "uuid",
+                "type": "string"
+              },
+              "property_type": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "rooms": {
+                "format": "int32",
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "sale_date": {
+                "format": "date",
+                "type": "string"
+              },
+              "sale_price": {
+                "format": "int64",
+                "type": "integer"
+              },
+              "size_m2": {
+                "format": "double",
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "year_built": {
+                "format": "int32",
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              }
+            },
+            "required": [
+              "agreement_id",
+              "property_id",
+              "sale_date",
+              "sale_price"
+            ],
+            "type": "object"
+          }
+        },
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "has_more": {
+            "type": "boolean"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/$defs/Sale"
+            },
+            "type": "array"
+          },
+          "limit": {
+            "format": "int64",
+            "type": "integer"
+          },
+          "offset": {
+            "format": "int64",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "items",
+          "limit",
+          "offset",
+          "has_more"
+        ],
+        "title": "Page",
+        "type": "object"
+      }
+    },
+    {
+      "_meta": {
+        "securitySchemes": [
+          {
+            "scopes": [
+              "mcp:tools"
+            ],
+            "type": "oauth2"
+          }
+        ]
+      },
+      "annotations": {
+        "destructiveHint": false,
+        "openWorldHint": false,
+        "readOnlyHint": true
+      },
+      "description": "Return deterministically ranked nearby comparable transactions; scores are similarity, not confidence.",
+      "inputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "additionalProperties": false,
+        "properties": {
+          "limit": {
+            "default": 10,
+            "format": "uint",
+            "maximum": 50,
+            "minimum": 1,
+            "type": "integer"
+          },
+          "max_age_days": {
+            "default": 730,
+            "format": "int64",
+            "maximum": 3650,
+            "minimum": 1,
+            "type": "integer"
+          },
+          "max_distance_m": {
+            "default": 1500,
+            "format": "double",
+            "maximum": 50000,
+            "minimum": 1,
+            "type": "number"
+          },
+          "property_id": {
+            "format": "uuid",
+            "type": "string"
+          }
+        },
+        "required": [
+          "property_id"
+        ],
+        "title": "ComparableInput",
+        "type": "object"
+      },
+      "name": "get_comparables",
+      "outputSchema": {
+        "$defs": {
+          "Comparable": {
+            "properties": {
+              "adjusted_value": {
+                "format": "double",
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "sale": {
+                "$ref": "#/$defs/Sale"
+              },
+              "similarity_score": {
+                "format": "double",
+                "type": "number"
+              }
+            },
+            "required": [
+              "sale",
+              "similarity_score"
+            ],
+            "type": "object"
+          },
+          "Sale": {
+            "properties": {
+              "address": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "agreement_id": {
+                "format": "int64",
+                "type": "integer"
+              },
+              "distance_m": {
+                "format": "double",
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "price_per_m2": {
+                "format": "double",
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "property_id": {
+                "format": "uuid",
+                "type": "string"
+              },
+              "property_type": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "rooms": {
+                "format": "int32",
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "sale_date": {
+                "format": "date",
+                "type": "string"
+              },
+              "sale_price": {
+                "format": "int64",
+                "type": "integer"
+              },
+              "size_m2": {
+                "format": "double",
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "year_built": {
+                "format": "int32",
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              }
+            },
+            "required": [
+              "agreement_id",
+              "property_id",
+              "sale_date",
+              "sale_price"
+            ],
+            "type": "object"
+          }
+        },
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "candidates_truncated": {
+            "type": "boolean"
+          },
+          "comparables": {
+            "items": {
+              "$ref": "#/$defs/Comparable"
+            },
+            "type": "array"
+          },
+          "methodology": {
+            "type": "string"
+          },
+          "subject_property_id": {
+            "format": "uuid",
+            "type": "string"
+          }
+        },
+        "required": [
+          "subject_property_id",
+          "comparables",
+          "methodology",
+          "candidates_truncated"
+        ],
+        "title": "Comparables",
+        "type": "object"
+      }
+    },
+    {
+      "_meta": {
+        "securitySchemes": [
+          {
+            "scopes": [
+              "mcp:tools"
+            ],
+            "type": "oauth2"
+          }
+        ]
+      },
+      "annotations": {
+        "destructiveHint": false,
+        "openWorldHint": false,
+        "readOnlyHint": true
+      },
+      "description": "Run and return a live Valjú price estimate using current property features and market index data. The response identifies today's calculation date; unavailable interval or model metadata is null.",
+      "inputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "additionalProperties": false,
+        "properties": {
+          "property_id": {
+            "format": "uuid",
+            "type": "string"
+          }
+        },
+        "required": [
+          "property_id"
+        ],
+        "title": "PropertyInput",
+        "type": "object"
+      },
+      "name": "get_valuation",
+      "outputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "comparable_property_ids": {
+            "items": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "type": [
+              "array",
+              "null"
+            ]
+          },
+          "confidence": {
+            "format": "double",
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "model_version": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "property_id": {
+            "format": "uuid",
+            "type": "string"
+          },
+          "range_high": {
+            "format": "double",
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "range_low": {
+            "format": "double",
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "source": {
+            "type": "string"
+          },
+          "valuation": {
+            "format": "double",
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "valuation_date": {
+            "format": "date",
+            "type": "string"
+          }
+        },
+        "required": [
+          "property_id",
+          "valuation_date",
+          "source"
+        ],
+        "title": "Valuation",
+        "type": "object"
+      }
+    },
+    {
+      "_meta": {
+        "securitySchemes": [
+          {
+            "scopes": [
+              "mcp:tools"
+            ],
+            "type": "oauth2"
+          }
+        ]
+      },
+      "annotations": {
+        "destructiveHint": false,
+        "openWorldHint": false,
+        "readOnlyHint": true
+      },
+      "description": "Return auditable segment-v2 transaction medians and canonical unique-property inventory. Common municipality aliases are normalized. The response includes calculation date, applied filters, source-advertisement coverage, exclusion counts, methodology, and reasons for unavailable metrics.",
+      "inputSchema": {
+        "$defs": {
+          "Period": {
+            "enum": [
+              "3m",
+              "6m",
+              "12m",
+              "24m"
+            ],
+            "type": "string"
+          },
+          "PropertyType": {
+            "enum": [
+              "apartment",
+              "detached_house",
+              "terraced_house",
+              "floor",
+              "other"
+            ],
+            "type": "string"
+          }
+        },
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "additionalProperties": false,
+        "properties": {
+          "max_size_m2": {
+            "format": "double",
+            "maximum": 100000,
+            "minimum": 0,
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "min_size_m2": {
+            "format": "double",
+            "maximum": 100000,
+            "minimum": 0,
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "municipalities": {
+            "default": [],
+            "items": {
+              "type": "string"
+            },
+            "maxItems": 30,
+            "type": "array"
+          },
+          "period": {
+            "$ref": "#/$defs/Period",
+            "default": "12m"
+          },
+          "postal_codes": {
+            "default": [],
+            "items": {
+              "type": "string"
+            },
+            "maxItems": 30,
+            "type": "array"
+          },
+          "property_types": {
+            "default": [],
+            "items": {
+              "$ref": "#/$defs/PropertyType"
+            },
+            "maxItems": 5,
+            "type": "array"
+          }
+        },
+        "title": "MarketInput",
+        "type": "object"
+      },
+      "name": "get_market_stats",
+      "outputSchema": {
+        "$defs": {
+          "MarketCoverage": {
+            "properties": {
+              "active_listing_records": {
+                "format": "int64",
+                "type": "integer"
+              },
+              "active_source_advertisements": {
+                "format": "int64",
+                "type": "integer"
+              },
+              "active_unique_properties": {
+                "format": "int64",
+                "type": "integer"
+              },
+              "canonical_properties_in_segment": {
+                "format": "int64",
+                "type": "integer"
+              },
+              "eligible_single_property_sales": {
+                "format": "int64",
+                "type": "integer"
+              },
+              "excluded_invalid_sales": {
+                "format": "int64",
+                "type": "integer"
+              },
+              "excluded_multi_property_sales": {
+                "format": "int64",
+                "type": "integer"
+              },
+              "excluded_nonpositive_price_sales": {
+                "format": "int64",
+                "type": "integer"
+              },
+              "sales_considered": {
+                "format": "int64",
+                "type": "integer"
+              }
+            },
+            "required": [
+              "canonical_properties_in_segment",
+              "active_listing_records",
+              "active_unique_properties",
+              "active_source_advertisements",
+              "sales_considered",
+              "eligible_single_property_sales",
+              "excluded_invalid_sales",
+              "excluded_multi_property_sales",
+              "excluded_nonpositive_price_sales"
+            ],
+            "type": "object"
+          },
+          "MarketInput": {
+            "additionalProperties": false,
+            "properties": {
+              "max_size_m2": {
+                "format": "double",
+                "maximum": 100000,
+                "minimum": 0,
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "min_size_m2": {
+                "format": "double",
+                "maximum": 100000,
+                "minimum": 0,
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "municipalities": {
+                "default": [],
+                "items": {
+                  "type": "string"
+                },
+                "maxItems": 30,
+                "type": "array"
+              },
+              "period": {
+                "$ref": "#/$defs/Period",
+                "default": "12m"
+              },
+              "postal_codes": {
+                "default": [],
+                "items": {
+                  "type": "string"
+                },
+                "maxItems": 30,
+                "type": "array"
+              },
+              "property_types": {
+                "default": [],
+                "items": {
+                  "$ref": "#/$defs/PropertyType"
+                },
+                "maxItems": 5,
+                "type": "array"
+              }
+            },
+            "type": "object"
+          },
+          "Period": {
+            "enum": [
+              "3m",
+              "6m",
+              "12m",
+              "24m"
+            ],
+            "type": "string"
+          },
+          "PropertyType": {
+            "enum": [
+              "apartment",
+              "detached_house",
+              "terraced_house",
+              "floor",
+              "other"
+            ],
+            "type": "string"
+          }
+        },
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "applied_filters": {
+            "$ref": "#/$defs/MarketInput"
+          },
+          "calculated_at": {
+            "format": "date",
+            "type": "string"
+          },
+          "coverage": {
+            "$ref": "#/$defs/MarketCoverage"
+          },
+          "current_inventory": {
+            "format": "int64",
+            "type": "integer"
+          },
+          "inventory_change_period": {
+            "format": "double",
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "median_days_on_market": {
+            "format": "double",
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "median_price_per_m2": {
+            "format": "double",
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "median_sale_price": {
+            "format": "double",
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "methodology": {
+            "type": "string"
+          },
+          "period_end": {
+            "format": "date",
+            "type": "string"
+          },
+          "period_start": {
+            "format": "date",
+            "type": "string"
+          },
+          "price_change_period": {
+            "format": "double",
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "transactions": {
+            "format": "int64",
+            "type": "integer"
+          },
+          "turnover_rate": {
+            "format": "double",
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "unavailable_metrics": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "type": "object"
+          }
+        },
+        "required": [
+          "period_start",
+          "period_end",
+          "transactions",
+          "current_inventory",
+          "methodology",
+          "calculated_at",
+          "applied_filters",
+          "coverage",
+          "unavailable_metrics"
+        ],
+        "title": "MarketStats",
+        "type": "object"
+      }
+    }
+  ]
+}
