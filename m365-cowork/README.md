@@ -10,7 +10,7 @@ The manifest points to the Valjú MCP [privacy notice](https://valju.is/mcp/priv
 node m365-cowork/build.mjs
 ```
 
-This produces `dist/valju-m365-cowork-0.1.0.zip`. The resulting ZIP has `manifest.json`, `color.png`, `outline.png`, `tools/valju.json`, and `skills/valju/SKILL.md` at its root. Building the ZIP does not mean it is ready to distribute; the frontend pages must be live and the privacy and terms text reviewed by the service owner first.
+This produces `dist/valju-m365-cowork-0.1.1.zip`. The manifest uses the exact package-relative paths `tools/valju.json` and `skills/valju`, and the build checks that the ZIP contains their files. The old 0.1.0 ZIP used `./tools/valju.json` in the manifest and was rejected as missing by Microsoft; do not upload it. Building the ZIP does not mean it is ready to distribute; the frontend pages must be live and the privacy and terms text reviewed by the service owner first.
 
 ## Before publishing
 
