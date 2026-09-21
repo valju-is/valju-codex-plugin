@@ -6,8 +6,8 @@
   "developer": {
     "name": "Valjú",
     "websiteUrl": "https://valju.is/mcp",
-    "privacyUrl": "__PRIVACY_URL__",
-    "termsOfUseUrl": "__TERMS_URL__"
+    "privacyUrl": "https://valju.is/mcp/privacy",
+    "termsOfUseUrl": "https://valju.is/mcp/terms"
   },
   "name": {
     "short": "Valjú",
