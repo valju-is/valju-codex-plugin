@@ -6,27 +6,20 @@ import { fileURLToPath } from 'node:url';
 
 const source = dirname(fileURLToPath(import.meta.url));
 const root = dirname(source);
-const options = Object.fromEntries(process.argv.slice(2).reduce((pairs, arg, index, args) => {
-  if (arg.startsWith('--') && index + 1 < args.length) pairs.push([arg, args[index + 1]]);
-  return pairs;
-}, []));
 
-function legalUrl(value, flag) {
-  if (!value) throw new Error(`${flag} is required`);
+function legalUrl(value, field) {
+  if (!value) throw new Error(`${field} is required`);
   const url = new URL(value);
-  if (url.protocol !== 'https:' || url.hostname !== 'valju.is') {
-    throw new Error(`${flag} must be a public https://valju.is URL`);
+  if (url.protocol !== 'https:' || url.hostname !== 'valju.is' || !url.pathname.startsWith('/mcp/')) {
+    throw new Error(`${field} must be a public https://valju.is/mcp/ URL`);
   }
   return url.href;
 }
 
-const privacyUrl = legalUrl(options['--privacy-url'], '--privacy-url');
-const termsUrl = legalUrl(options['--terms-url'], '--terms-url');
+const manifest = JSON.parse(readFileSync(join(source, 'manifest.json'), 'utf8'));
+const privacyUrl = legalUrl(manifest.developer.privacyUrl, 'developer.privacyUrl');
+const termsUrl = legalUrl(manifest.developer.termsOfUseUrl, 'developer.termsOfUseUrl');
 if (privacyUrl === termsUrl) throw new Error('Privacy and terms must be separate pages');
-
-const manifest = JSON.parse(readFileSync(join(source, 'manifest.template.json'), 'utf8'));
-manifest.developer.privacyUrl = privacyUrl;
-manifest.developer.termsOfUseUrl = termsUrl;
 if (manifest.manifestVersion !== '1.28' || !manifest.agentConnectors?.[0]?.toolSource?.remoteMcpServer?.mcpToolDescription?.file) {
   throw new Error('Expected Microsoft 365 v1.28 manifest with a remote MCP tool description');
 }
