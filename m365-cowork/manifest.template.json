@@ -1,0 +1,43 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/teams/v1.28/MicrosoftTeams.schema.json",
+  "manifestVersion": "1.28",
+  "version": "0.1.0",
+  "id": "eb51f9e5-9116-4bec-bebe-7e0f801e623f",
+  "developer": {
+    "name": "Valjú",
+    "websiteUrl": "https://valju.is/mcp",
+    "privacyUrl": "__PRIVACY_URL__",
+    "termsOfUseUrl": "__TERMS_URL__"
+  },
+  "name": {
+    "short": "Valjú",
+    "full": "Valjú Icelandic Real Estate"
+  },
+  "description": {
+    "short": "Research Icelandic property, listings, sales and valuations",
+    "full": "Connect Microsoft 365 Copilot Cowork to Valjú's authenticated Icelandic real-estate research tools. Search active listings and recorded sales, inspect properties and listing images, compare transactions, run live valuations, and review market statistics."
+  },
+  "icons": {
+    "color": "color.png",
+    "outline": "outline.png"
+  },
+  "accentColor": "#FF663F",
+  "agentSkills": [
+    { "folder": "./skills/valju" }
+  ],
+  "agentConnectors": [
+    {
+      "id": "valju-mcp",
+      "displayName": "Valjú",
+      "description": "Authenticated Icelandic real-estate listings, sales, property facts, images and live valuations.",
+      "toolSource": {
+        "remoteMcpServer": {
+          "mcpServerUrl": "https://api.valju.is/mcp",
+          "mcpToolDescription": {
+            "file": "./tools/valju.json"
+          }
+        }
+      }
+    }
+  ]
+}

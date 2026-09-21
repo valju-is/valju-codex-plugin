@@ -28,6 +28,10 @@ See the [official ChatGPT developer-mode guide](https://developers.openai.com/ap
 
 ## Microsoft 365 Copilot
 
+For **Microsoft 365 Copilot Cowork**, the [separate Microsoft 365 app-package source](m365-cowork/README.md) includes a v1.28 manifest, the Valjú skill, and a remote MCP connector with tool descriptions. It is not the Claude Cowork ZIP below. A ready-to-upload Microsoft ZIP is pending Valjú's real privacy-policy and terms-of-use URLs, core-service deployment, and Microsoft tenant validation; do not upload the source template directly.
+
+For a **tenant-wide custom federated connector** outside Cowork, use the administrator setup below.
+
 Microsoft 365 Copilot uses a custom federated connector. Setup requires a Microsoft 365 Global Administrator or AI Administrator and an OAuth registration created through the Teams Developer Portal.
 
 1. Open the Microsoft 365 admin center and select **Copilot → Connectors**.
