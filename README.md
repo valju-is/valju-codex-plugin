@@ -19,15 +19,15 @@ You need a Valjú account and a supported client with remote MCP and OAuth suppo
 
 ## ChatGPT
 
-1. Download [`valju-chatgpt-plugin-0.2.0.zip`](dist/valju-chatgpt-plugin-0.2.0.zip).
-2. In the ChatGPT plugin upload flow, choose **With MCP** rather than a skills-only upload.
-3. Upload the ZIP without extracting it.
-4. Review the Valjú connection to `https://api.valju.is/mcp` and complete OAuth authorization.
+1. Download [`valju-chatgpt-plugin-0.2.1.zip`](dist/valju-chatgpt-plugin-0.2.1.zip).
+2. Upload the ZIP from the ChatGPT plugin installation flow without extracting it.
+3. Confirm that your account or workspace can access the registered Valjú ChatGPT app.
+4. Complete Valjú OAuth authorization when prompted.
 5. Enable Valjú in a new conversation.
 
-The package has the portable `plugin.json` and `mcp.json` manifests at the ZIP root, along with the Valjú skill and logo. Its source and build instructions are in [`chatgpt/`](chatgpt/README.md). A skills-only upload does not include the data connection.
+The package has `plugin.json`, portable `mcp.json`, and `.app.json` at the ZIP root, along with the Valjú skill and logo. The app mapping attaches the registered Valjú MCP connection in ChatGPT web sessions. Its source and build instructions are in [`chatgpt/`](chatgpt/README.md).
 
-For development environments that still offer direct MCP creation, the Valjú URL remains `https://api.valju.is/mcp`.
+For public Plugins Directory publication, create a **With MCP** submission and submit `https://api.valju.is/mcp` directly. The submission portal does not publish an existing app reference from the ZIP.
 
 See the [official ChatGPT plugin connection guide](https://developers.openai.com/plugins/deploy/connect-chatgpt).
 

@@ -21,11 +21,12 @@ function requireHttpsUrl(value, field, expectedHost) {
 
 const pluginPath = join(source, 'plugin.json');
 const mcpPath = join(source, 'mcp.json');
+const appPath = join(source, '.app.json');
 const skillPath = join(source, 'skills/valju/SKILL.md');
 const assetPath = join(source, 'assets/valju-mark.png');
 const readmePath = join(source, 'README.md');
 
-for (const path of [pluginPath, mcpPath, skillPath, assetPath, readmePath]) {
+for (const path of [pluginPath, mcpPath, appPath, skillPath, assetPath, readmePath]) {
   if (!existsSync(path)) throw new Error(`Missing package file: ${path}`);
 }
 
@@ -39,6 +40,18 @@ if (plugin.name !== 'valju' || !/^\d+\.\d+\.\d+$/.test(plugin.version)) {
 const openaiInterface = plugin.extensions?.['com.openai']?.interface;
 if (!openaiInterface || openaiInterface.displayName !== 'Valjú') {
   throw new Error('Missing OpenAI interface metadata');
+}
+
+if (plugin.extensions?.['com.openai']?.apps !== './.app.json') {
+  throw new Error('OpenAI app mapping must reference ./.app.json');
+}
+const app = readJson(appPath);
+const registeredApp = app.apps?.valju;
+if (registeredApp?.id !== 'asdk_app_6ab394f5691081918b65ce2780df4375' || registeredApp.required !== true) {
+  throw new Error('Expected the required registered Valjú ChatGPT app mapping');
+}
+if (!/^(?:asdk_app|connector|templated_apps)_[A-Za-z0-9_-]+$/.test(registeredApp.id)) {
+  throw new Error('Registered ChatGPT app ID has an unsupported format');
 }
 requireHttpsUrl(openaiInterface.privacyPolicyURL, 'privacyPolicyURL', 'valju.is');
 requireHttpsUrl(openaiInterface.termsOfServiceURL, 'termsOfServiceURL', 'valju.is');
@@ -67,6 +80,7 @@ const staging = mkdtempSync(join(tmpdir(), 'valju-chatgpt-'));
 try {
   writeFileSync(join(staging, 'plugin.json'), `${JSON.stringify(plugin, null, 2)}\n`);
   writeFileSync(join(staging, 'mcp.json'), `${JSON.stringify(mcp, null, 2)}\n`);
+  writeFileSync(join(staging, '.app.json'), `${JSON.stringify(app, null, 2)}\n`);
   cpSync(join(source, 'skills'), join(staging, 'skills'), { recursive: true });
   cpSync(join(source, 'assets'), join(staging, 'assets'), { recursive: true });
   cpSync(readmePath, join(staging, 'README.md'));
@@ -77,9 +91,9 @@ try {
     throw new Error(`Package already exists: ${output}. Bump the version before rebuilding.`);
   }
 
-  execFileSync('zip', ['-q', '-r', output, 'plugin.json', 'mcp.json', 'skills', 'assets', 'README.md'], { cwd: staging });
+  execFileSync('zip', ['-q', '-r', output, 'plugin.json', 'mcp.json', '.app.json', 'skills', 'assets', 'README.md'], { cwd: staging });
   const entries = execFileSync('unzip', ['-Z1', output], { encoding: 'utf8' }).trim().split(/\r?\n/);
-  for (const required of ['plugin.json', 'mcp.json', 'skills/valju/SKILL.md', 'assets/valju-mark.png', 'README.md']) {
+  for (const required of ['plugin.json', 'mcp.json', '.app.json', 'skills/valju/SKILL.md', 'assets/valju-mark.png', 'README.md']) {
     if (!entries.includes(required)) throw new Error(`ZIP is missing required entry: ${required}`);
   }
   if (entries.some(entry => entry.startsWith('chatgpt/'))) {

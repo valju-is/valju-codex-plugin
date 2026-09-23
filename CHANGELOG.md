@@ -4,6 +4,7 @@ All notable changes to the public Valjú integrations will be documented here.
 
 ## Unreleased
 
+- Map ChatGPT package version 0.2.1 to the registered Valjú MCP app so it is available in eligible web sessions.
 - Add a portable ChatGPT upload package with root plugin and MCP manifests, Valjú instructions, branding, legal URLs, and a validated build script.
 - Fix the Microsoft Cowork tool-description reference to match the exact ZIP entry path and publish package version 0.1.1.
 - Add explicit account-level Custom Connector setup for Cowork cloud sessions and publish plugin version 0.1.3.

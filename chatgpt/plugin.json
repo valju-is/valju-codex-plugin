@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "valju",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Research Icelandic properties and housing markets with authenticated Valjú data.",
   "author": {
     "name": "Valjú",
@@ -21,9 +21,10 @@
   ],
   "extensions": {
     "com.openai": {
+      "apps": "./.app.json",
       "interface": {
         "displayName": "Valjú",
-        "shortDescription": "Icelandic real-estate listings, sales, valuations, and market data.",
+        "shortDescription": "Icelandic property data",
         "longDescription": "Research Icelandic properties and housing markets using authenticated Valjú listings, recorded sales, live valuations, comparable transactions, images, exports, and aggregate market statistics.",
         "developerName": "Valjú",
         "category": "Productivity",
