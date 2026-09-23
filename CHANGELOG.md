@@ -4,6 +4,7 @@ All notable changes to the public Valjú integrations will be documented here.
 
 ## Unreleased
 
+- Add a portable ChatGPT upload package with root plugin and MCP manifests, Valjú instructions, branding, legal URLs, and a validated build script.
 - Fix the Microsoft Cowork tool-description reference to match the exact ZIP entry path and publish package version 0.1.1.
 - Add explicit account-level Custom Connector setup for Cowork cloud sessions and publish plugin version 0.1.3.
 - Rename the Cowork skill from `valju-real-estate` to `valju` and publish plugin version 0.1.2.

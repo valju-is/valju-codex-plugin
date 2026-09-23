@@ -34,7 +34,7 @@ if (skillFolder !== 'skills/valju' || !existsSync(join(source, skillFolder, 'SKI
 }
 
 const tools = JSON.parse(readFileSync(join(source, 'tools/valju.json'), 'utf8')).tools;
-if (tools.length !== 9 || !tools.every(tool => tool.name && tool.description && tool.inputSchema)) {
+if (tools.length !== 12 || !tools.every(tool => tool.name && tool.description && tool.inputSchema)) {
   throw new Error('Valjú MCP tool description is incomplete');
 }
 

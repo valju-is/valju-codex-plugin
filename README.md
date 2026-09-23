@@ -19,16 +19,21 @@ You need a Valjú account and a supported client with remote MCP and OAuth suppo
 
 ## ChatGPT
 
-1. In ChatGPT, open **Settings → Security and login** and enable **Developer mode**.
-2. Open <https://chatgpt.com/plugins>, select **Create app**, and name it Valjú.
-3. Enter `https://api.valju.is/mcp` as the MCP server URL.
-4. Select Valjú in a new conversation and complete the authorization flow.
+1. Download [`valju-chatgpt-plugin-0.2.0.zip`](dist/valju-chatgpt-plugin-0.2.0.zip).
+2. In the ChatGPT plugin upload flow, choose **With MCP** rather than a skills-only upload.
+3. Upload the ZIP without extracting it.
+4. Review the Valjú connection to `https://api.valju.is/mcp` and complete OAuth authorization.
+5. Enable Valjú in a new conversation.
 
-See the [official ChatGPT developer-mode guide](https://developers.openai.com/api/docs/guides/developer-mode).
+The package has the portable `plugin.json` and `mcp.json` manifests at the ZIP root, along with the Valjú skill and logo. Its source and build instructions are in [`chatgpt/`](chatgpt/README.md). A skills-only upload does not include the data connection.
+
+For development environments that still offer direct MCP creation, the Valjú URL remains `https://api.valju.is/mcp`.
+
+See the [official ChatGPT plugin connection guide](https://developers.openai.com/plugins/deploy/connect-chatgpt).
 
 ## Microsoft 365 Copilot
 
-For **Microsoft 365 Copilot Cowork**, the [separate Microsoft 365 app-package source](m365-cowork/README.md) includes a v1.28 manifest, the Valjú skill, and a remote MCP connector with tool descriptions. It is not the Claude Cowork ZIP below. Its manifest links to the Valjú MCP [privacy notice](https://valju.is/mcp/privacy) and [terms](https://valju.is/mcp/terms). Use the corrected [0.1.1 test ZIP](dist/valju-m365-cowork-0.1.1.zip); the earlier 0.1.0 ZIP was rejected by Microsoft's file-path validator. The package is not ready for production use until frontend and core-service deployment, legal review, and Microsoft tenant validation are complete.
+For **Microsoft 365 Copilot Cowork**, the [separate Microsoft 365 app-package source](m365-cowork/README.md) includes a v1.28 manifest, the Valjú skill, and a remote MCP connector with tool descriptions. It is not the Claude Cowork ZIP below. Its manifest links to the Valjú MCP [privacy notice](https://valju.is/mcp/privacy) and [terms](https://valju.is/mcp/terms). Use the updated [0.1.2 test ZIP](dist/valju-m365-cowork-0.1.2.zip); the earlier 0.1.0 ZIP was rejected by Microsoft's file-path validator. The package is not ready for production use until frontend and core-service deployment, legal review, and Microsoft tenant validation are complete.
 
 For a **tenant-wide custom federated connector** outside Cowork, use the administrator setup below.
 

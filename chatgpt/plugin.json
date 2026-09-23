@@ -1,0 +1,46 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "valju",
+  "version": "0.2.0",
+  "description": "Research Icelandic properties and housing markets with authenticated Valjú data.",
+  "author": {
+    "name": "Valjú",
+    "email": "palmar@valju.is",
+    "url": "https://valju.is"
+  },
+  "homepage": "https://valju.is/mcp",
+  "repository": "https://github.com/valju-is/valju-plugin",
+  "license": "MIT",
+  "keywords": [
+    "Iceland",
+    "real estate",
+    "property listings",
+    "property sales",
+    "valuations",
+    "housing market"
+  ],
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "displayName": "Valjú",
+        "shortDescription": "Icelandic real-estate listings, sales, valuations, and market data.",
+        "longDescription": "Research Icelandic properties and housing markets using authenticated Valjú listings, recorded sales, live valuations, comparable transactions, images, exports, and aggregate market statistics.",
+        "developerName": "Valjú",
+        "category": "Productivity",
+        "capabilities": [
+          "Read"
+        ],
+        "websiteURL": "https://valju.is/mcp",
+        "privacyPolicyURL": "https://valju.is/mcp/privacy",
+        "termsOfServiceURL": "https://valju.is/mcp/terms",
+        "defaultPrompt": [
+          "Research an Icelandic property with Valjú",
+          "Find active Icelandic real-estate listings",
+          "Analyze Icelandic housing-market sales and listing statistics"
+        ],
+        "composerIcon": "./assets/valju-mark.png",
+        "logo": "./assets/valju-mark.png"
+      }
+    }
+  }
+}

@@ -1449,6 +1449,804 @@
         "openWorldHint": false,
         "readOnlyHint": true
       },
+      "description": "Export the complete current Valjú sale-agreement register in cursor pages, including invalid, bundled, zero-price and unmatched records. Start with {}, then copy next_cursor into cursor until null. No 10,000-row offset limit. Each row has Valjú and HMS new-building flags; null means unknown or unclassifiable.",
+      "inputSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "additionalProperties": false,
+        "description": "Cursor pagination is deliberately independent of search_sales' 10,000-row offset cap.",
+        "properties": {
+          "cursor": {
+            "description": "Copy next_cursor from the preceding response; omit for the first page.",
+            "maxLength": 80,
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "limit": {
+            "default": 500,
+            "format": "int64",
+            "maximum": 1000,
+            "minimum": 1,
+            "type": "integer"
+          }
+        },
+        "title": "SalesExportInput",
+        "type": "object"
+      },
+      "name": "export_sales",
+      "outputSchema": {
+        "$defs": {
+          "SaleRegisterRow": {
+            "description": "One row per current sale-agreement record, including invalid and bundled records.",
+            "properties": {
+              "address": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "agreement_id": {
+                "format": "int64",
+                "type": "integer"
+              },
+              "is_fully_complete": {
+                "type": [
+                  "boolean",
+                  "null"
+                ]
+              },
+              "is_invalid_agreement": {
+                "type": "boolean"
+              },
+              "is_multi_property_agreement": {
+                "type": "boolean"
+              },
+              "is_new_building_hms": {
+                "description": "At sale date: built within three calendar years, irrespective of sale history.",
+                "type": [
+                  "boolean",
+                  "null"
+                ]
+              },
+              "is_new_building_valju": {
+                "description": "At sale date: built within five calendar years and no earlier valid sale.",
+                "type": [
+                  "boolean",
+                  "null"
+                ]
+              },
+              "municipality": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "postal_code": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "property_id": {
+                "format": "uuid",
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "property_reference": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "property_type": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "registration_date": {
+                "format": "date",
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "rooms": {
+                "format": "int32",
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "sale_agreement_id": {
+                "format": "uuid",
+                "type": "string"
+              },
+              "sale_date": {
+                "format": "date",
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "sale_price": {
+                "format": "int64",
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "size_m2": {
+                "format": "double",
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "source": {
+                "type": "string"
+              },
+              "year_built": {
+                "format": "int32",
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              }
+            },
+            "required": [
+              "sale_agreement_id",
+              "source",
+              "agreement_id",
+              "is_invalid_agreement",
+              "is_multi_property_agreement"
+            ],
+            "type": "object"
+          }
+        },
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "calculated_at": {
+            "format": "date",
+            "type": "string"
+          },
+          "has_more": {
+            "type": "boolean"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/$defs/SaleRegisterRow"
+            },
+            "type": "array"
+          },
+          "limit": {
+            "format": "int64",
+            "type": "integer"
+          },
+          "methodology": {
+            "type": "string"
+          },
+          "next_cursor": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "items",
+          "limit",
+          "has_more",
+          "calculated_at",
+          "methodology"
+        ],
+        "title": "SalesExportPage",
+        "type": "object"
+      }
+    },
+    {
+      "_meta": {
+        "securitySchemes": [
+          {
+            "scopes": [
+              "mcp:tools"
+            ],
+            "type": "oauth2"
+          }
+        ]
+      },
+      "annotations": {
+        "destructiveHint": false,
+        "openWorldHint": false,
+        "readOnlyHint": true
+      },
+      "description": "Aggregate today's canonical listings by municipality, postal code, property type, Valjú new-building flag and HMS age-only new-building flag. Includes counts and medians; paginate groups with limit and offset.",
+      "inputSchema": {
+        "$defs": {
+          "PropertyType": {
+            "enum": [
+              "apartment",
+              "detached_house",
+              "terraced_house",
+              "floor",
+              "other"
+            ],
+            "type": "string"
+          }
+        },
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "additionalProperties": false,
+        "properties": {
+          "limit": {
+            "default": 200,
+            "format": "int64",
+            "maximum": 500,
+            "minimum": 1,
+            "type": "integer"
+          },
+          "max_size_m2": {
+            "format": "double",
+            "maximum": 100000,
+            "minimum": 0,
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "min_size_m2": {
+            "format": "double",
+            "maximum": 100000,
+            "minimum": 0,
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "municipalities": {
+            "default": [],
+            "items": {
+              "type": "string"
+            },
+            "maxItems": 30,
+            "type": "array"
+          },
+          "offset": {
+            "default": 0,
+            "format": "int64",
+            "minimum": 0,
+            "type": "integer"
+          },
+          "postal_codes": {
+            "default": [],
+            "items": {
+              "type": "string"
+            },
+            "maxItems": 30,
+            "type": "array"
+          },
+          "property_types": {
+            "default": [],
+            "items": {
+              "$ref": "#/$defs/PropertyType"
+            },
+            "maxItems": 5,
+            "type": "array"
+          }
+        },
+        "title": "ListingAggregateInput",
+        "type": "object"
+      },
+      "name": "aggregate_listings",
+      "outputSchema": {
+        "$defs": {
+          "ListingAggregateGroup": {
+            "properties": {
+              "is_new_building_hms": {
+                "type": [
+                  "boolean",
+                  "null"
+                ]
+              },
+              "is_new_building_valju": {
+                "type": [
+                  "boolean",
+                  "null"
+                ]
+              },
+              "listings": {
+                "format": "int64",
+                "type": "integer"
+              },
+              "median_asking_price": {
+                "format": "double",
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "median_days_on_market": {
+                "format": "double",
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "municipality": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "postal_code": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "priced_listings": {
+                "format": "int64",
+                "type": "integer"
+              },
+              "property_type": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            },
+            "required": [
+              "listings",
+              "priced_listings"
+            ],
+            "type": "object"
+          },
+          "ListingAggregateInput": {
+            "additionalProperties": false,
+            "properties": {
+              "limit": {
+                "default": 200,
+                "format": "int64",
+                "maximum": 500,
+                "minimum": 1,
+                "type": "integer"
+              },
+              "max_size_m2": {
+                "format": "double",
+                "maximum": 100000,
+                "minimum": 0,
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "min_size_m2": {
+                "format": "double",
+                "maximum": 100000,
+                "minimum": 0,
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "municipalities": {
+                "default": [],
+                "items": {
+                  "type": "string"
+                },
+                "maxItems": 30,
+                "type": "array"
+              },
+              "offset": {
+                "default": 0,
+                "format": "int64",
+                "minimum": 0,
+                "type": "integer"
+              },
+              "postal_codes": {
+                "default": [],
+                "items": {
+                  "type": "string"
+                },
+                "maxItems": 30,
+                "type": "array"
+              },
+              "property_types": {
+                "default": [],
+                "items": {
+                  "$ref": "#/$defs/PropertyType"
+                },
+                "maxItems": 5,
+                "type": "array"
+              }
+            },
+            "type": "object"
+          },
+          "PropertyType": {
+            "enum": [
+              "apartment",
+              "detached_house",
+              "terraced_house",
+              "floor",
+              "other"
+            ],
+            "type": "string"
+          }
+        },
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "applied_filters": {
+            "$ref": "#/$defs/ListingAggregateInput"
+          },
+          "calculated_at": {
+            "format": "date",
+            "type": "string"
+          },
+          "groups": {
+            "items": {
+              "$ref": "#/$defs/ListingAggregateGroup"
+            },
+            "type": "array"
+          },
+          "has_more": {
+            "type": "boolean"
+          },
+          "limit": {
+            "format": "int64",
+            "type": "integer"
+          },
+          "methodology": {
+            "type": "string"
+          },
+          "offset": {
+            "format": "int64",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "groups",
+          "limit",
+          "offset",
+          "has_more",
+          "calculated_at",
+          "applied_filters",
+          "methodology"
+        ],
+        "title": "ListingAggregatePage",
+        "type": "object"
+      }
+    },
+    {
+      "_meta": {
+        "securitySchemes": [
+          {
+            "scopes": [
+              "mcp:tools"
+            ],
+            "type": "oauth2"
+          }
+        ]
+      },
+      "annotations": {
+        "destructiveHint": false,
+        "openWorldHint": false,
+        "readOnlyHint": true
+      },
+      "description": "Aggregate valid single-property sales by month, municipality, postal code, property type and both new-building flags. Defaults to the last 12 months; set sale_date_from/to for other windows and paginate groups with limit and offset.",
+      "inputSchema": {
+        "$defs": {
+          "PropertyType": {
+            "enum": [
+              "apartment",
+              "detached_house",
+              "terraced_house",
+              "floor",
+              "other"
+            ],
+            "type": "string"
+          }
+        },
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "additionalProperties": false,
+        "properties": {
+          "limit": {
+            "default": 200,
+            "format": "int64",
+            "maximum": 500,
+            "minimum": 1,
+            "type": "integer"
+          },
+          "max_size_m2": {
+            "format": "double",
+            "maximum": 100000,
+            "minimum": 0,
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "min_size_m2": {
+            "format": "double",
+            "maximum": 100000,
+            "minimum": 0,
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "municipalities": {
+            "default": [],
+            "items": {
+              "type": "string"
+            },
+            "maxItems": 30,
+            "type": "array"
+          },
+          "offset": {
+            "default": 0,
+            "format": "int64",
+            "minimum": 0,
+            "type": "integer"
+          },
+          "postal_codes": {
+            "default": [],
+            "items": {
+              "type": "string"
+            },
+            "maxItems": 30,
+            "type": "array"
+          },
+          "property_types": {
+            "default": [],
+            "items": {
+              "$ref": "#/$defs/PropertyType"
+            },
+            "maxItems": 5,
+            "type": "array"
+          },
+          "sale_date_from": {
+            "description": "Defaults to 12 months before sale_date_to.",
+            "format": "date",
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "sale_date_to": {
+            "description": "Defaults to today.",
+            "format": "date",
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "title": "SalesAggregateInput",
+        "type": "object"
+      },
+      "name": "aggregate_sales",
+      "outputSchema": {
+        "$defs": {
+          "PropertyType": {
+            "enum": [
+              "apartment",
+              "detached_house",
+              "terraced_house",
+              "floor",
+              "other"
+            ],
+            "type": "string"
+          },
+          "SalesAggregateGroup": {
+            "properties": {
+              "is_new_building_hms": {
+                "type": [
+                  "boolean",
+                  "null"
+                ]
+              },
+              "is_new_building_valju": {
+                "type": [
+                  "boolean",
+                  "null"
+                ]
+              },
+              "median_price_per_m2": {
+                "format": "double",
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "median_sale_price": {
+                "format": "double",
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "municipality": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "postal_code": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "property_type": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "sale_month": {
+                "format": "date",
+                "type": "string"
+              },
+              "transactions": {
+                "format": "int64",
+                "type": "integer"
+              }
+            },
+            "required": [
+              "sale_month",
+              "transactions"
+            ],
+            "type": "object"
+          },
+          "SalesAggregateInput": {
+            "additionalProperties": false,
+            "properties": {
+              "limit": {
+                "default": 200,
+                "format": "int64",
+                "maximum": 500,
+                "minimum": 1,
+                "type": "integer"
+              },
+              "max_size_m2": {
+                "format": "double",
+                "maximum": 100000,
+                "minimum": 0,
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "min_size_m2": {
+                "format": "double",
+                "maximum": 100000,
+                "minimum": 0,
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "municipalities": {
+                "default": [],
+                "items": {
+                  "type": "string"
+                },
+                "maxItems": 30,
+                "type": "array"
+              },
+              "offset": {
+                "default": 0,
+                "format": "int64",
+                "minimum": 0,
+                "type": "integer"
+              },
+              "postal_codes": {
+                "default": [],
+                "items": {
+                  "type": "string"
+                },
+                "maxItems": 30,
+                "type": "array"
+              },
+              "property_types": {
+                "default": [],
+                "items": {
+                  "$ref": "#/$defs/PropertyType"
+                },
+                "maxItems": 5,
+                "type": "array"
+              },
+              "sale_date_from": {
+                "description": "Defaults to 12 months before sale_date_to.",
+                "format": "date",
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "sale_date_to": {
+                "description": "Defaults to today.",
+                "format": "date",
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            },
+            "type": "object"
+          }
+        },
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "properties": {
+          "applied_filters": {
+            "$ref": "#/$defs/SalesAggregateInput"
+          },
+          "calculated_at": {
+            "format": "date",
+            "type": "string"
+          },
+          "groups": {
+            "items": {
+              "$ref": "#/$defs/SalesAggregateGroup"
+            },
+            "type": "array"
+          },
+          "has_more": {
+            "type": "boolean"
+          },
+          "limit": {
+            "format": "int64",
+            "type": "integer"
+          },
+          "methodology": {
+            "type": "string"
+          },
+          "offset": {
+            "format": "int64",
+            "type": "integer"
+          },
+          "period_end": {
+            "format": "date",
+            "type": "string"
+          },
+          "period_start": {
+            "format": "date",
+            "type": "string"
+          }
+        },
+        "required": [
+          "groups",
+          "limit",
+          "offset",
+          "has_more",
+          "period_start",
+          "period_end",
+          "calculated_at",
+          "applied_filters",
+          "methodology"
+        ],
+        "title": "SalesAggregatePage",
+        "type": "object"
+      }
+    },
+    {
+      "_meta": {
+        "securitySchemes": [
+          {
+            "scopes": [
+              "mcp:tools"
+            ],
+            "type": "oauth2"
+          }
+        ]
+      },
+      "annotations": {
+        "destructiveHint": false,
+        "openWorldHint": false,
+        "readOnlyHint": true
+      },
       "description": "Return deterministically ranked nearby comparable transactions; scores are similarity, not confidence.",
       "inputSchema": {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
